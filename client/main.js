@@ -2,6 +2,8 @@ let baseUrl = 'http://localhost:3000';
 
 // ini untuk fetch music
 fetchRandomMusic();
+// ini untuk fetch dark joke
+darkJoke();
 
 function fetchRandomMusic() {
   $.ajax({
@@ -25,6 +27,36 @@ function fetchRandomMusic() {
           </div>
         </li>
       `);
+    })
+    .fail((err) => {
+      Swal.fire(
+        'Display todo failed',
+        err.responseJSON.errors.join(','),
+        'error'
+      );
+    });
+}
+
+function darkJoke() {
+  $.ajax({
+    url: `${baseUrl}/jokes`,
+    method: 'get',
+    headers: {
+      // belum ada token, belum di setLocalStorage
+      token: localStorage.token,
+    },
+  })
+    .done((data) => {
+      $('#container-joke').empty();
+      data.randomJoke.forEach((element) => {
+        $('#container-joke').append(`
+          <li class="media bg-white rounded p-2 shadow mt-3">
+            <div class="mx-auto">
+              <b>${element}</b>
+            </div>
+          </li>
+        `);
+      });
     })
     .fail((err) => {
       Swal.fire(

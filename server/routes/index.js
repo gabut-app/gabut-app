@@ -8,5 +8,6 @@ router.post('/register', userController.register);
 router.get('/api-cerpen', apiController.cerpen);
 router.get('/api-musics', apiController.musics);
 router.get('/api-movies', apiController.movies);
+router.get('/jokes', apiController.darkJoke);
 
 module.exports = router;
