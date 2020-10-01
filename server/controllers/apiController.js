@@ -59,6 +59,24 @@ class ApiController {
     }
   }
 
+  static async darkJoke(req, res) {
+    try {
+      let randomJoke = [];
+      const joke = await axios.get(
+        'https://sv443.net/jokeapi/v2/joke/Programming?amount=5'
+      );
+      // console.log(joke.data);
+      joke.data.jokes.forEach((element) => {
+        if (element.joke) {
+          randomJoke.push(element.joke);
+        }
+      });
+      res.status(200).json({ randomJoke });
+    } catch (err) {
+      res.status(404).json({ msg: `Joke not found` });
+    }
+  }
+
   static movies(req, res) {}
 }
 
