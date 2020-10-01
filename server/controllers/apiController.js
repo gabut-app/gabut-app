@@ -32,13 +32,16 @@ class ApiController {
         `https://www.theaudiodb.com/api/v1/json/1/search.php?s=${musician[random]}`
       );
       const artist = response.data;
+      let thumbnail = null;
+      let artistName = null;
       let id = null;
       artist.artists.forEach((element) => {
         if (element.idArtist) {
           id = element.idArtist;
+          artistName = element.strArtist;
+          thumbnail = element.strArtistThumb;
         }
       });
-      console.log(id);
       const data = await axios.get(
         `https://theaudiodb.com/api/v1/json/1/mvid.php?i=${id}`
       );
@@ -48,8 +51,9 @@ class ApiController {
           linkVideo.push(element.strMusicVid);
         }
       });
-      console.log(linkVideo);
-      res.status(200).json({ linkVideo });
+      let randomPickVideo = Math.floor(Math.random() * linkVideo.length);
+      let selectedVideo = linkVideo[randomPickVideo];
+      res.status(200).json({ artistName, thumbnail, selectedVideo });
     } catch (err) {
       res.status(400).json({ msg: `Bad request` });
     }
