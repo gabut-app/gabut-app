@@ -1,9 +1,22 @@
 let baseUrl = 'http://localhost:3000';
 
-// ini untuk fetch music
-fetchRandomMusic();
-// ini untuk fetch dark joke
-darkJoke();
+$(document).ready(() => {
+  checkAuth()
+});
+
+function checkAuth() {
+  if (getToken()) {
+
+    // ini untuk fetch music
+    fetchRandomMusic();
+    // ini untuk fetch dark joke
+    darkJoke();
+  } else {
+
+  }
+}
+
+// API Call
 
 function fetchRandomMusic() {
   $.ajax({
@@ -65,4 +78,42 @@ function darkJoke() {
         'error'
       );
     });
+}
+
+// Google Sign Button
+
+function onSignIn(googleUser) {
+  const googleToken = googleUser.getAuthResponse().id_token
+
+  $.ajax({
+    url: baseUrl + '/google-sign-in',
+    method: 'POST',
+    data: { googleToken }
+  })
+    .done(data => {
+      setToken(data.token)
+      checkAuth()
+    })
+    .fail(err => {
+      console.log('err', err)
+    })
+}
+
+function onSignOut() {
+  const auth2 = gapi.auth2.getAuthInstance()
+  auth2.signOut().then(() => console.log('User signed out.'))
+}
+
+// Local Storage Utils
+
+function setToken(token) {
+  localStorage.setItem('token', token)
+}
+
+function getToken() {
+  return localStorage.getItem('token')
+}
+
+function removeToken() {
+  localStorage.removeItem('token')
 }
