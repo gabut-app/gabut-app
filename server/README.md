@@ -1,5 +1,5 @@
 # Gabut App
-Gabut app is an application for gabut people enjoy their gabut time. This app has : 
+Gabut app is an application for gabut people enjoy their gabut time. This app has :
 * RESTful endpoint for asset's Read operation
 * JSON formatted response
 
@@ -114,7 +114,30 @@ not needed
 
 _Response (200 - OK)_
 ```
-
+{
+  "movies": [
+    {
+        "popularity": 992.637,
+        "vote_count": 111,
+        "video": false,
+        "poster_path": "https://image.tmdb.org/t/p/w500/ugZW8ocsrfgI95pnQ7wrmKDxIe.jpg",
+        "id": 724989,
+        "adult": false,
+        "backdrop_path": "https://image.tmdb.org/t/p/w500/86L8wqGMDbwURPni2t7FQ0nDjsH.jpg",
+        "original_language": "en",
+        "original_title": "Hard Kill",
+        "genre_ids": [
+            "Action",
+            "Thriller"
+        ],
+        "title": "Hard Kill",
+        "vote_average": 5,
+        "overview": "The work of billionaire tech CEO Donovan Chalmers is so valuable that he hires mercenaries to protect it, and a terrorist group kidnaps his daughter just to get it.",
+        "release_date": "2020-08-25"
+    },
+    ...
+  ]
+}
 ```
 
 _Response (400 - Bad Request)_

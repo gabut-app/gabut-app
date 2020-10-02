@@ -5,9 +5,12 @@ $(document).ready(() => {
 });
 
 function checkAuth() {
+  console.log('called');
   if (getToken()) {
     // hide login page
     $('#login-page').hide();
+    $('#home-page').show();
+    $('#button-logout').show();
     // ini untuk fetch music
     fetchRandomMusic();
     // fetch random movies
@@ -76,7 +79,7 @@ function darkJoke() {
       $('#container-joke').empty();
       data.randomJoke.forEach((element) => {
         $('#container-joke').append(`
-          <li class="media bg-white rounded p-2 shadow mt-3">
+          <li class="media bg-white rounded p-4 shadow mt-3">
             <div class="mx-auto">
               <b>${element}</b>
             </div>
@@ -131,7 +134,7 @@ function fetchRandomMovies() {
     },
   })
     .done(data => {
-      // console.log('movies', data.movies)
+      console.log('movies', data.movies)
       const container = $('#movies > .row')
       container.empty()
 
