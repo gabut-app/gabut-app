@@ -60,7 +60,6 @@ class ApiController {
   }
 
   static async movies(req, res) {
-    // const { popularity } = req.query
     try {
       const dataGenres = await getGenres()
       const dataMovies = await getMovies()
@@ -130,7 +129,6 @@ class ApiController {
     }
   }
 
-  static movies(req, res) {}
 }
 
 module.exports = ApiController;

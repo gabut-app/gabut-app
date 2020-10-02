@@ -8,11 +8,13 @@ function checkAuth() {
   if (getToken()) {
 
     // ini untuk fetch music
-    fetchRandomMusic();
+    // fetchRandomMusic();
     // ini untuk fetch dark joke
-    darkJoke();
+    // darkJoke();
     //
-    randomCerpen();
+    // randomCerpen();
+    // ini untuk fetch movies
+    fetchRandomMovies()
   } else {
 
   }
@@ -103,7 +105,7 @@ function randomCerpen() {
       $('#container-cerpen').append(`
         <li class="media bg-white rounded p-2 shadow mt-3">
           <div class="mx-auto">
-            <p>${data.cerpen}</p>
+            <p>${data.cerpen.replace(/\n/gm, "<br>")}</p>
           </div>
         </li>
       `);
@@ -120,16 +122,35 @@ function randomCerpen() {
 function fetchRandomMovies() {
   $.ajax({
     url: `${baseUrl}/api-movies`,
-    method: 'get',
+    method: 'GET',
     headers: {
       token: getToken(),
     },
   })
-    .done((data) => {
-      console.log('data', data);
+    .done(data => {
+      const container = $('#movies > .row')
+      container.empty()
 
+      data.movies.forEach(movie => {
+        container.append(`
+          <div class="card mb-3" style="max-width: 540px;">
+            <div class="row no-gutters">
+              <div class="col-md-4">
+                <img src="${movie.poster_path}" class="card-img" alt="cover">
+              </div>
+              <div class="col-md-8">
+                <div class="card-body">
+                  <h5 class="card-title">${movie.title}</h5>
+                  <p class="card-text">${movie.overview}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `)
+      })
     })
     .fail((err) => {
+      console.log('err', err)
       Swal.fire(
         'Display todo failed',
         err.responseJSON.errors.join(','),
