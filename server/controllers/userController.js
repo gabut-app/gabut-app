@@ -31,10 +31,9 @@ class UserController {
   static async register(req, res, next) {
     try {
       const { email, password } = req.body;
-      const hashedPass = hashPass(password);
       const data = await User.create({
         email,
-        password: hashedPass,
+        password,
       });
       res.status(201).json({
         id: data.id,
