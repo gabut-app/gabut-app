@@ -105,7 +105,7 @@ function randomCerpen() {
     .done((data) => {
       console.log(data);
       $('#container-cerpen').empty();
-      $('#container-cerpen').append(`
+      $('#container-cerpen').html(`
         <li class="media bg-white rounded p-2 shadow mt-3">
           <div class="mx-auto">
             <p>${data.cerpen.replace(/\n/gm, "<br>")}</p>
@@ -131,20 +131,26 @@ function fetchRandomMovies() {
     },
   })
     .done(data => {
+      // console.log('movies', data.movies)
       const container = $('#movies > .row')
       container.empty()
 
       data.movies.forEach(movie => {
         container.append(`
-          <div class="card mb-3" style="max-width: 540px;">
-            <div class="row no-gutters">
-              <div class="col-md-4">
-                <img src="${movie.poster_path}" class="card-img" alt="cover">
-              </div>
-              <div class="col-md-8">
-                <div class="card-body">
-                  <h5 class="card-title">${movie.title}</h5>
-                  <p class="card-text">${movie.overview}</p>
+          <div class="col-6">
+            <div class="card mb-3 shadow">
+              <div class="row no-gutters">
+                <div class="col-md-4">
+                  <img src="${movie.poster_path}" class="card-img" alt="cover">
+                </div>
+                <div class="col-md-8">
+                  <div class="card-body">
+                    <h5 class="card-title font-weight-bolder">${movie.title}</h5>
+                    <p class="card-text">${movie.overview}</p>
+                    <h6 class="card-subtitle mb-2 text-muted">Release Date: ${movie.release_date}</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Language: ${movie.original_language}</h6>
+                    ${movie.genre_ids.map(i => `<div class="badge badge-primary mr-2 mt-2">${i}</div>`).join('')}
+                  </div>
                 </div>
               </div>
             </div>
