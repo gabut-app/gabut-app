@@ -1,6 +1,6 @@
 # Gabut App
 Gabut app is an application for gabut people enjoy their gabut time. This app has : 
-* RESTful endpoint for asset's CRUD operation
+* RESTful endpoint for asset's Read operation
 * JSON formatted response
 
 &nbsp;
