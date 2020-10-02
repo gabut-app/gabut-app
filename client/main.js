@@ -1,27 +1,32 @@
 let baseUrl = 'http://localhost:3000';
 
 $(document).ready(() => {
-  checkAuth()
+  checkAuth();
 });
 
 function checkAuth() {
   if (getToken()) {
-
+    // hide login page
+    $('#login-page').hide();
     // ini untuk fetch music
     fetchRandomMusic();
+    // fetch random movies
+    fetchRandomMovies();
     // ini untuk fetch dark joke
     darkJoke();
-    //
+    // fetch cerpen
     randomCerpen();
   } else {
-
+    $('#login-page').show();
+    $('#home-page').hide();
+    $('#button-logout').hide();
   }
 }
 
 function logout() {
-  removeToken()
-  onSignOut()
-  checkAuth()
+  removeToken();
+  onSignOut();
+  checkAuth();
 }
 
 // API Call
@@ -97,9 +102,9 @@ function randomCerpen() {
       token: getToken(),
     },
   })
-    .done(data => {
-      console.log(data)
-      $('#container-cerpen').empty()
+    .done((data) => {
+      console.log(data);
+      $('#container-cerpen').empty();
       $('#container-cerpen').append(`
         <li class="media bg-white rounded p-2 shadow mt-3">
           <div class="mx-auto">
@@ -115,7 +120,7 @@ function randomCerpen() {
         'error'
       );
     });
-  }
+}
 
 function fetchRandomMovies() {
   $.ajax({
@@ -127,7 +132,6 @@ function fetchRandomMovies() {
   })
     .done((data) => {
       console.log('data', data);
-
     })
     .fail((err) => {
       Swal.fire(
@@ -141,41 +145,117 @@ function fetchRandomMovies() {
 // Google Sign Button
 
 function onSignIn(googleUser) {
-  const googleToken = googleUser.getAuthResponse().id_token
+  const googleToken = googleUser.getAuthResponse().id_token;
 
   $.ajax({
     url: baseUrl + '/google-sign-in',
     method: 'POST',
-    data: { googleToken }
+    data: { googleToken },
   })
-    .done(data => {
-      setToken(data.token)
-      checkAuth()
+    .done((data) => {
+      setToken(data.token);
+      checkAuth();
     })
-    .fail(err => {
+    .fail((err) => {
       Swal.fire(
         'Display todo failed',
         err.responseJSON.errors.join(','),
         'error'
       );
-    })
+    });
+}
+
+function showRegisterForm() {
+  $('#register-page').show();
+  $('#login-page').hide();
+}
+
+function backToLogin() {
+  $('#register-page').hide();
+  $('#login-page').show();
+  location.reload();
 }
 
 function onSignOut() {
-  const auth2 = gapi.auth2.getAuthInstance()
-  auth2.signOut().then(() => console.log('User signed out.'))
+  const auth2 = gapi.auth2.getAuthInstance();
+  auth2.signOut().then(() => console.log('User signed out.'));
+}
+
+// Login
+$('#register-page').hide();
+function login(event) {
+  event.preventDefault();
+  let email = $('#login-email').val();
+  let password = $('#login-password').val();
+
+  $.ajax({
+    url: `${baseUrl}/login`,
+    method: 'post',
+    data: {
+      email,
+      password,
+    },
+  })
+    .done((data) => {
+      console.log(data);
+      setToken(data.token);
+      checkAuth();
+      location.reload();
+    })
+    .fail((err) => {
+      console.log(err);
+      Swal.fire('Login Failed!', err.responseJSON.errors.join(','), 'error');
+    })
+    .always(() => {
+      clear();
+    });
+}
+
+// Register
+function register(event) {
+  event.preventDefault();
+  $('#login-page').hide();
+  const email = $('#register-email').val();
+  const password = $('#register-password').val();
+
+  $.ajax({
+    url: `${baseUrl}/register`,
+    method: 'post',
+    data: {
+      email,
+      password,
+    },
+  })
+    .done((data) => {
+      clear();
+      $('#login-page').show();
+      $('#register-page').hide();
+    })
+    .fail((err) => {
+      Swal.fire('Register Failed', err.responseJSON.errors.join(','), 'error');
+    })
+    .always(() => {
+      clear();
+    });
 }
 
 // Local Storage Utils
 
 function setToken(token) {
-  localStorage.setItem('token', token)
+  localStorage.setItem('token', token);
 }
 
 function getToken() {
-  return localStorage.getItem('token')
+  return localStorage.getItem('token');
 }
 
 function removeToken() {
-  localStorage.removeItem('token')
+  localStorage.removeItem('token');
+}
+
+function clear() {
+  $('#login-email').val('');
+  $('#login-password').val('');
+  $('#register-email').val('');
+  $('#register-password').val('');
 }
