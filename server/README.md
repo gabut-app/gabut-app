@@ -114,11 +114,7 @@ not needed
 
 _Response (200 - OK)_
 ```
-{
-    "artistName": "BLACKPINK",
-    "thumbnail": "https://www.theaudiodb.com/images/media/artist/thumb/txuxsy1476547962.jpg",
-    "selectedVideo": "https://www.youtube.com/watch?v=Amq-qlqbjYA"
-}
+
 ```
 
 _Response (400 - Bad Request)_
