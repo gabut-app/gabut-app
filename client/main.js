@@ -16,6 +16,12 @@ function checkAuth() {
   }
 }
 
+function logout() {
+  removeToken()
+  onSignOut()
+  checkAuth()
+}
+
 // API Call
 
 function fetchRandomMusic() {
@@ -80,6 +86,27 @@ function darkJoke() {
     });
 }
 
+function fetchRandomMusic() {
+  $.ajax({
+    url: `${baseUrl}/api-movies`,
+    method: 'get',
+    headers: {
+      token: getToken(),
+    },
+  })
+    .done((data) => {
+      console.log('data', data);
+
+    })
+    .fail((err) => {
+      Swal.fire(
+        'Display todo failed',
+        err.responseJSON.errors.join(','),
+        'error'
+      );
+    });
+}
+
 // Google Sign Button
 
 function onSignIn(googleUser) {
@@ -95,7 +122,11 @@ function onSignIn(googleUser) {
       checkAuth()
     })
     .fail(err => {
-      console.log('err', err)
+      Swal.fire(
+        'Display todo failed',
+        err.responseJSON.errors.join(','),
+        'error'
+      );
     })
 }
 
