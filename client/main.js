@@ -4,6 +4,8 @@ let baseUrl = 'http://localhost:3000';
 fetchRandomMusic();
 // ini untuk fetch dark joke
 darkJoke();
+// ini untuk fetch cerpen
+randomCerpen();
 
 function fetchRandomMusic() {
   $.ajax({
@@ -61,6 +63,35 @@ function darkJoke() {
     .fail((err) => {
       Swal.fire(
         'Display todo failed',
+        err.responseJSON.errors.join(','),
+        'error'
+      );
+    });
+}
+
+function randomCerpen() {
+  $.ajax({
+    url: `${baseUrl}/api-cerpen`,
+    method: 'get',
+    headers: {
+      // belum ada token, belum di localStorage
+      token: localStorage.token,
+    },
+  })
+    .done(data => {
+      console.log(data)
+      $('#container-cerpen').empty()
+      $('#container-cerpen').append(`
+        <li class="media bg-white rounded p-2 shadow mt-3">
+          <div class="mx-auto">
+            <p>${data.cerpen}</p>
+          </div>
+        </li>
+      `);
+    })
+    .fail((err) => {
+      Swal.fire(
+        'Display cerpen failed',
         err.responseJSON.errors.join(','),
         'error'
       );
