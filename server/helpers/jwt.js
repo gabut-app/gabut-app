@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken')
 
 function generateToken(payLoad) {
-  console.log(process.env.SECRET, '<<<< ENV SECRET')
   return jwt.sign(payLoad, process.env.SECRET)
 }
 

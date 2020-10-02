@@ -1,9 +1,28 @@
 let baseUrl = 'http://localhost:3000';
 
-// ini untuk fetch music
-fetchRandomMusic();
-// ini untuk fetch dark joke
-darkJoke();
+$(document).ready(() => {
+  checkAuth()
+});
+
+function checkAuth() {
+  if (getToken()) {
+
+    // ini untuk fetch music
+    fetchRandomMusic();
+    // ini untuk fetch dark joke
+    darkJoke();
+  } else {
+
+  }
+}
+
+function logout() {
+  removeToken()
+  onSignOut()
+  checkAuth()
+}
+
+// API Call
 
 function fetchRandomMusic() {
   $.ajax({
@@ -65,4 +84,67 @@ function darkJoke() {
         'error'
       );
     });
+}
+
+function fetchRandomMusic() {
+  $.ajax({
+    url: `${baseUrl}/api-movies`,
+    method: 'get',
+    headers: {
+      token: getToken(),
+    },
+  })
+    .done((data) => {
+      console.log('data', data);
+
+    })
+    .fail((err) => {
+      Swal.fire(
+        'Display todo failed',
+        err.responseJSON.errors.join(','),
+        'error'
+      );
+    });
+}
+
+// Google Sign Button
+
+function onSignIn(googleUser) {
+  const googleToken = googleUser.getAuthResponse().id_token
+
+  $.ajax({
+    url: baseUrl + '/google-sign-in',
+    method: 'POST',
+    data: { googleToken }
+  })
+    .done(data => {
+      setToken(data.token)
+      checkAuth()
+    })
+    .fail(err => {
+      Swal.fire(
+        'Display todo failed',
+        err.responseJSON.errors.join(','),
+        'error'
+      );
+    })
+}
+
+function onSignOut() {
+  const auth2 = gapi.auth2.getAuthInstance()
+  auth2.signOut().then(() => console.log('User signed out.'))
+}
+
+// Local Storage Utils
+
+function setToken(token) {
+  localStorage.setItem('token', token)
+}
+
+function getToken() {
+  return localStorage.getItem('token')
+}
+
+function removeToken() {
+  localStorage.removeItem('token')
 }
