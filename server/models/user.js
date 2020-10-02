@@ -1,7 +1,6 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+const { hashPass } = require('../helpers/bcrypt');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -12,44 +11,52 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
     }
-  };
-  User.init({
-    email: {
-      allowNull: false,
-      type: DataTypes.STRING,
-      unique: true,
-      validate: {
-        isEmail: {
-          args: true,
-          msg: 'format email is wrong'
+  }
+  User.init(
+    {
+      email: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        unique: true,
+        validate: {
+          isEmail: {
+            args: true,
+            msg: 'format email is wrong',
+          },
+          notEmpty: {
+            args: true,
+            msg: 'email is required',
+          },
+          notNull: {
+            args: true,
+            msg: 'email is required',
+          },
         },
-        notEmpty: {
-          args: true,
-          msg: 'email is required'
+      },
+      password: {
+        allowNull: false,
+        type: DataTypes.STRING,
+        validate: {
+          notNull: {
+            args: true,
+            msg: 'password is required',
+          },
+          notEmpty: {
+            args: true,
+            msg: 'password is required',
+          },
         },
-        notNull: {
-          args: true,
-          msg: 'email is required'
-        }
-      }
+      },
     },
-    password: {
-      allowNull: false,
-      type: DataTypes.STRING,
-      validate: {
-        notNull: {
-          args: true,
-          msg: 'password is required'
+    {
+      hooks: {
+        beforeCreate: (instance, options) => {
+          instance.password = hashPass(instance.password);
         },
-        notEmpty: {
-          args: true,
-          msg: 'password is required'
-        }
-      }
+      },
+      sequelize,
+      modelName: 'User',
     }
-  }, {
-    sequelize,
-    modelName: 'User',
-  });
+  );
   return User;
 };
