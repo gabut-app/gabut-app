@@ -1,11 +1,30 @@
 let baseUrl = 'http://localhost:3000';
 
-// ini untuk fetch music
-fetchRandomMusic();
-// ini untuk fetch dark joke
-darkJoke();
-// ini untuk fetch cerpen
-randomCerpen();
+$(document).ready(() => {
+  checkAuth()
+});
+
+function checkAuth() {
+  if (getToken()) {
+
+    // ini untuk fetch music
+    fetchRandomMusic();
+    // ini untuk fetch dark joke
+    darkJoke();
+    //
+    randomCerpen();
+  } else {
+
+  }
+}
+
+function logout() {
+  removeToken()
+  onSignOut()
+  checkAuth()
+}
+
+// API Call
 
 function fetchRandomMusic() {
   $.ajax({
@@ -13,7 +32,7 @@ function fetchRandomMusic() {
     method: 'get',
     headers: {
       // belum ada token, belum di setLocalStorage
-      token: localStorage.token,
+      token: getToken(),
     },
   })
     .done((data) => {
@@ -32,7 +51,7 @@ function fetchRandomMusic() {
     })
     .fail((err) => {
       Swal.fire(
-        'Display todo failed',
+        'Display music failed',
         err.responseJSON.errors.join(','),
         'error'
       );
@@ -45,7 +64,7 @@ function darkJoke() {
     method: 'get',
     headers: {
       // belum ada token, belum di setLocalStorage
-      token: localStorage.token,
+      token: getToken(),
     },
   })
     .done((data) => {
@@ -75,7 +94,7 @@ function randomCerpen() {
     method: 'get',
     headers: {
       // belum ada token, belum di localStorage
-      token: localStorage.token,
+      token: getToken(),
     },
   })
     .done(data => {
@@ -96,4 +115,67 @@ function randomCerpen() {
         'error'
       );
     });
+  }
+
+function fetchRandomMovies() {
+  $.ajax({
+    url: `${baseUrl}/api-movies`,
+    method: 'get',
+    headers: {
+      token: getToken(),
+    },
+  })
+    .done((data) => {
+      console.log('data', data);
+
+    })
+    .fail((err) => {
+      Swal.fire(
+        'Display todo failed',
+        err.responseJSON.errors.join(','),
+        'error'
+      );
+    });
+}
+
+// Google Sign Button
+
+function onSignIn(googleUser) {
+  const googleToken = googleUser.getAuthResponse().id_token
+
+  $.ajax({
+    url: baseUrl + '/google-sign-in',
+    method: 'POST',
+    data: { googleToken }
+  })
+    .done(data => {
+      setToken(data.token)
+      checkAuth()
+    })
+    .fail(err => {
+      Swal.fire(
+        'Display todo failed',
+        err.responseJSON.errors.join(','),
+        'error'
+      );
+    })
+}
+
+function onSignOut() {
+  const auth2 = gapi.auth2.getAuthInstance()
+  auth2.signOut().then(() => console.log('User signed out.'))
+}
+
+// Local Storage Utils
+
+function setToken(token) {
+  localStorage.setItem('token', token)
+}
+
+function getToken() {
+  return localStorage.getItem('token')
+}
+
+function removeToken() {
+  localStorage.removeItem('token')
 }
