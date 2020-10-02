@@ -6,7 +6,8 @@
     integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="google-signin-client_id" content="252860447837-pkiqm590fjtbj91vfg1cckcmre3r9irf.apps.googleusercontent.com">
+  <meta name="google-signin-client_id"
+    content="252860447837-pkiqm590fjtbj91vfg1cckcmre3r9irf.apps.googleusercontent.com">
   <title>Gabut App</title>
 </head>
 
@@ -29,7 +30,7 @@
             <a class="nav-link" href="#">Menu</a>
           </li>
         </ul>
-        <button class="btn btn-danger my-2 my-sm-0" type="button" onclick="logout()">Logout</button>
+        <button id="button-logout" class="btn btn-danger my-2 my-sm-0" type="button" onclick="logout()">Logout</button>
       </div>
     </div>
   </nav>
@@ -52,11 +53,36 @@
               <input type="password" class="form-control" id="login-password" placeholder="Password">
             </div>
             <button type="submit" class="btn btn-primary">Login</button>
-            <button onclick="register(event)" type="submit" class="btn btn-secondary">Register</button>
+            <a onclick="showRegisterForm()" class="btn btn-secondary">Register</a>
             <h6 class="mt-3">
               <p>Or, use another account:</p>
             </h6>
             <div class="g-signin2" data-onsuccess="onSignIn"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="register-page" class="container">
+    <div class="row justify-content-center mt-5">
+      <div class="col-4">
+        <div class="shadow-lg p-5 mb-5 bg-white rounded">
+          <div class="mb-5">
+
+          </div>
+          <h3 class="mb-4"><b>Register</b></h3>
+          <form onsubmit="register(event)">
+            <div class="form-group">
+              <label for="register email">Email Address</label>
+              <input type="email" class="form-control" id="register-email" placeholder="Your email">
+            </div>
+            <div class="form-group">
+              <label for="register password">Password</label>
+              <input type="password" class="form-control" id="register-password" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+            <a onclick="backToLogin()" class="btn btn-info">Back to Login</a>
           </form>
         </div>
       </div>
