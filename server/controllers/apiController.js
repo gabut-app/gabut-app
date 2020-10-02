@@ -60,7 +60,6 @@ class ApiController {
   }
 
   static async movies(req, res) {
-    // const { popularity } = req.query
     try {
       const dataGenres = await getGenres()
       const dataMovies = await getMovies()
@@ -76,7 +75,17 @@ class ApiController {
         return movie
       })
 
-      res.status(200).json({ movies })
+      // Random Movies
+      const shuffledMovies = movies
+        .map(a => ({ sort: Math.random(), value: a }))
+        .sort((a, b) => a.sort - b.sort)
+        .map(a => a.value)
+
+      // Get half size
+      const halfLength = Math.ceil(shuffledMovies.length / 2)
+      const firstTenMovies = shuffledMovies.splice(0, halfLength)
+
+      res.status(200).json({ movies: firstTenMovies })
 
     } catch (error) {
       console.log('error', error)
@@ -130,7 +139,6 @@ class ApiController {
     }
   }
 
-  static movies(req, res) {}
 }
 
 module.exports = ApiController;

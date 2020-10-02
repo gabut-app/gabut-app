@@ -23,12 +23,12 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
+          <!-- <li class="nav-item active">
             <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Menu</a>
-          </li>
+          </li> -->
         </ul>
         <button id="button-logout" class="btn btn-danger my-2 my-sm-0" type="button" onclick="logout()">Logout</button>
       </div>
@@ -89,21 +89,38 @@
     </div>
   </section>
 
-  <section id="home-page" class="container">
-    <div id="musics" class="col-6 mx-auto">
-      <ul class="list-unstyled" id="container-music">
+  <section id="home-page" class="container my-5">
+    <div class="row mb-4">
+      <div id="musics" class="col-4">
+        <h1 class="text-center">Random Music</h1>
+        <hr>
+        <ul class="list-unstyled" id="container-music">
 
-      </ul>
-    </div>
-    <div id="dark-joke" class="col-8 mx-auto">
-      <ul class="list-unstyled" id="container-joke">
+        </ul>
+      </div>
 
-      </ul>
+      <div id="dark-joke" class="col-8">
+        <h1 class="text-center">Random Dark Jokes</h1>
+        <hr>
+        <ul class="list-unstyled" id="container-joke">
+
+        </ul>
+      </div>
     </div>
-    <div id="cerpen" class="col-8 mx-auto">
+
+    <div id="cerpen" class="col-10 mx-auto mb-4">
+      <h1 class="text-center">Random Cerpen</h1>
+      <hr>
       <ul class="list-unstyled" id="container-cerpen">
 
       </ul>
+    </div>
+
+    <div id="movies">
+      <h1 class="text-center">Random 10 Popular Movies</h1>
+      <hr>
+      <div class="row">
+      </div>
     </div>
   </section>
 

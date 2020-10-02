@@ -1,6 +1,5 @@
 const { OAuth2Client } = require('google-auth-library');
 const { comparePass } = require('../helpers/bcrypt');
-const { hashPass } = require('../helpers/bcrypt');
 const { User } = require('../models');
 const { generateToken } = require('../helpers/jwt');
 
