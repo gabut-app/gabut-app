@@ -11,6 +11,8 @@ function checkAuth() {
     fetchRandomMusic();
     // ini untuk fetch dark joke
     darkJoke();
+    //
+    randomCerpen();
   } else {
 
   }
@@ -30,7 +32,7 @@ function fetchRandomMusic() {
     method: 'get',
     headers: {
       // belum ada token, belum di setLocalStorage
-      token: localStorage.token,
+      token: getToken(),
     },
   })
     .done((data) => {
@@ -49,7 +51,7 @@ function fetchRandomMusic() {
     })
     .fail((err) => {
       Swal.fire(
-        'Display todo failed',
+        'Display music failed',
         err.responseJSON.errors.join(','),
         'error'
       );
@@ -62,7 +64,7 @@ function darkJoke() {
     method: 'get',
     headers: {
       // belum ada token, belum di setLocalStorage
-      token: localStorage.token,
+      token: getToken(),
     },
   })
     .done((data) => {
@@ -86,7 +88,36 @@ function darkJoke() {
     });
 }
 
-function fetchRandomMusic() {
+function randomCerpen() {
+  $.ajax({
+    url: `${baseUrl}/api-cerpen`,
+    method: 'get',
+    headers: {
+      // belum ada token, belum di localStorage
+      token: getToken(),
+    },
+  })
+    .done(data => {
+      console.log(data)
+      $('#container-cerpen').empty()
+      $('#container-cerpen').append(`
+        <li class="media bg-white rounded p-2 shadow mt-3">
+          <div class="mx-auto">
+            <p>${data.cerpen}</p>
+          </div>
+        </li>
+      `);
+    })
+    .fail((err) => {
+      Swal.fire(
+        'Display cerpen failed',
+        err.responseJSON.errors.join(','),
+        'error'
+      );
+    });
+  }
+
+function fetchRandomMovies() {
   $.ajax({
     url: `${baseUrl}/api-movies`,
     method: 'get',

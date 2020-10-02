@@ -15,7 +15,7 @@ class ApiController {
       });
   }
 
-  static cerpen(req, res) {}
+  // static cerpen(req, res) {}
 
   static async musics(req, res) {
     try {
